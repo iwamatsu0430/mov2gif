@@ -1,0 +1,18 @@
+#!/bin/bash
+
+help () {
+  echo "Example: 'mov2gif input output scale'"
+  echo "- input: input mov file path"
+  echo "- output: output gif file path"
+  echo "- scale: optional. gif scale. default=320"
+}
+
+if [ $# -lt 2 ]; then
+  echo "arguments length must over 2!"
+  help
+  exit 1
+fi
+
+scale=${3:-320}
+
+`ffmpeg -i $1 -vf "scale=$scale:-1" -pix_fmt rgb24 -r 30 -f gif - | gifsicle --delay=3 --optimize=3 > $2`
